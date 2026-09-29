@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <cctype>
+#include <vector>
 #include <windows.h>
 #include <unordered_set>
 #include "structfortask.h"
@@ -11,12 +14,12 @@ using namespace std;
 // =========================================== ПЕРВОЕ ЗАДАНИЕ ===========================================
 
 int Task1::max_element_value(const int a[], int n) {
-    int bigest = a[0];
+    int biggest = a[0];
     for (int i = 1; i < n; i++) {
         cmp++;
-        if (a[i] > bigest) bigest = a[i];
+        if (a[i] > biggest) biggest = a[i];
     }
-    return bigest;
+    return biggest;
 }
 
 long long Task1::sum_elements(const int a[], int n) {
@@ -40,16 +43,16 @@ bool Task1::contains(const int a[], int n, int x) {
 
 void Task2::bubble_sort(int a[], int n) {
     for (int i = 0; i + 1 < n; i++) {
-        int swapped = 0;
+        bool swapped = false;
         for (int j = 0; j + 1 < n - i; j++) {
             cmp++;
             if (a[j] > a[j + 1]) {
-                std::swap(a[j], a[j + 1]);
+                swap(a[j], a[j + 1]);
                 writes += 2;
-                swapped = 1;
+                swapped = true;
             }
         }
-        if (swapped == 0) break;
+        if (!swapped) break;
     }
 }
 
@@ -72,44 +75,44 @@ void Task2::insertion_sort(int a[], int n) {
 // =========================================== ТРЕТЬЕ ЗАДАНИЕ ===========================================
 
 // один проход
-std::string Task3::second_largest(std::istream& in, int n) {
-    std::string mx1 = "";
-    std::string mx2 = "";
+string Task3::second_largest(istream& in, int n) {
+    string largest = "";
+    string second_largest = "";
 
     for (int i = 0; i < n; i++) {
-        std::string s;
+        string s;
         in >> s;
 
-        if (s > mx1) {
-            mx2 = mx1;
-            mx1 = s;
+        if (s > largest) {
+            second_largest = largest;
+            largest = s;
         }
-        else if (s != mx1 && s > mx2) {
-            mx2 = s;
+        else if (s != largest && s > second_largest) {
+            second_largest = s;
         }
     }
 
-    return mx2.empty() ? "NONE" : mx2;
+    return second_largest.empty() ? "NONE" : second_largest;
 }
 
 // сортировкой
-std::string Task3::second_largest_sort(std::istream& in, int n) {
-    std::vector<std::string> a(n);
+string Task3::second_largest_sort(istream& in, int n) {
+    vector<string> a(n);
     for (int i = 0; i < n; i++) in >> a[i];
 
-    std::sort(a.begin(), a.end());
+    sort(a.begin(), a.end());
 
-    const std::string& mx = a.back();
+    const string& largest = a.back();
     for (int i = n - 2; i >= 0; i--) {
-        if (a[i] != mx) return a[i];
+        if (a[i] != largest) return a[i];
     }
     return "NONE";
 }
 
 // =========================================== ЧЕТВЕРТОЕ ЗАДАНИЕ ===========================================
 
-bool Task4::is_palindrom_approach1(const std::string& s) {
-    std::string t;
+bool Task4::is_palindrome_approach1(const string& s) {
+    string t;
     t.reserve(s.size());
 
     for (char c : s) {
@@ -127,12 +130,12 @@ bool Task4::is_palindrom_approach1(const std::string& s) {
     return true;
 }
 
-bool Task4::is_palindrom_approach2(const std::string& s) {
+bool Task4::is_palindrome_approach2(const string& s) {
     int l = 0; int r = static_cast<int>(s.size()) - 1;
     while (l < r) {
-        while (l < r && !std::isalnum(static_cast<unsigned char>(s[l]))) ++l;
-        while (l < r && !std::isalnum(static_cast<unsigned char>(s[r]))) --r;
-        if (std::tolower(static_cast<unsigned char>(s[l])) != std::tolower(static_cast<unsigned char>(s[r]))) return false;
+        while (l < r && !isalnum(static_cast<unsigned char>(s[l]))) ++l;
+        while (l < r && !isalnum(static_cast<unsigned char>(s[r]))) --r;
+        if (tolower(static_cast<unsigned char>(s[l])) != tolower(static_cast<unsigned char>(s[r]))) return false;
         ++l;
         --r;
     }
@@ -142,71 +145,88 @@ bool Task4::is_palindrom_approach2(const std::string& s) {
 // =========================================== ПЯТОЕ ЗАДАНИЕ ===========================================
 
 // прямой проход
-int Task5::count_long(int a[], int n) {
-    int c = 0;
+int Task5::count_unique_bruteforce(const int a[], int n) {
+    int count = 0;
     for (int i = 0; i < n; i++) {
-        bool yes = false;
+        bool already_seen = false;
         for (int j = 0; j < i; j++) {
             if (a[i] == a[j]) {
-                yes = true;
+                already_seen = true;
                 break;
             }
         }
-        if (!yes) c++;
+        if (!already_seen) count++;
     }
-    return c;
+    return count;
 }
 
 // с помощью сортировки
-int Task5::count_sort(int a[], int n) {
+int Task5::count_unique_sort(int a[], int n) {
     if (n == 0) return 0;
     sort(a, a + n);
-    int c = 1;
+    int count = 1;
     for (int i = 1; i < n; i++) {
-        if (a[i] != a[i - 1]) c++;
+        if (a[i] != a[i - 1]) count++;
     }
-    return c;
+    return count;
 }
 
 // хэш таблицей
-int Task5::count_xash(int a[], int n) {
-    std::unordered_set<int> s;
+int Task5::count_unique_hash(const int a[], int n) {
+    unordered_set<int> elements;
     for (int i = 0; i < n; i++) {
-        s.insert(a[i]);
+        elements.insert(a[i]);
     }
-    return static_cast<int>(s.size());
+    return static_cast<int>(elements.size());
 }
 
 // =========================================== ШЕСТОЕ ЗАДАНИЯ ===========================================
 
 // полный проход для каждого
-int Task6::native_miss(int a[], int n) {
-    int c = 1;
-    while (std::count(a, a + n, c) > 0) {
-        ++c;
+int Task6::find_native_miss(int a[], int n) {
+    int candidate = 1;
+    while(count(a, a + n, candidate) > 0) {
+        ++candidate;
     }
-    return c;
+    return candidate;
+}
+
+int Task6::find_missing_mark(int a[], int n) {
+    vector<bool> seen(n + 2, false);
+
+    for (int i = 0; i < n; i++) {
+        if (a[i] >= 1 && a[i] <= n + 1) {
+            seen[a[i]] = true;
+        }
+    }
+
+    for (int candidate = 1; candidate <= n + 1; candidate++) {
+        if (!seen[candidate]) {
+            return candidate;
+        }
+    }
+
+    return n + 1;
 }
 
 // через хэш 
-int Task6::mark_miss(int a[], int n) {
+int Task6::find_hash_miss(int a[], int n) {
     unordered_set<int> seen;
     for (int i = 0; i < n; i++) {
         if (a[i] >= 1 && a[i] <= n + 1) {
             seen.insert(a[i]);
         }
     }
-    for (int i = 1; i <= n + 1; i++) {
-        if (seen.find(i) == seen.end()) return i;
+    for (int candidate = 1; candidate <= n + 1; candidate++) {
+        if (seen.find(candidate) == seen.end()) return candidate;
     }
     return n + 2;
 }
 
 int main()
 {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-    setlocale(LC_ALL, "rus");
+    SetConsoleCP(65001);
+    SetConsoleOutputCP(65001);
     do {
         cout << "\nВыберите задачу:\n";
         cout << "(1) Задание 1. Операции с массивом\n";

@@ -38,17 +38,18 @@ struct Task3 {
 };
 
 struct Task4 {
-	bool is_palindrom_approach1(const std::string& s);
-	bool is_palindrom_approach2(const std::string& s);
+	bool is_palindrome_approach1(const std::string& s);
+	bool is_palindrome_approach2(const std::string& s);
 };
 
 struct Task5 {
-	int count_long(int a[], int n);
-	int count_sort(int a[], int n);
-	int count_xash(int a[], int n);
+	int count_unique_bruteforce(const int a[], int n);
+	int count_unique_sort(int a[], int n);
+	int count_unique_hash(const int a[], int n);
 };
 
 struct Task6 {
-	int native_miss(int a[], int n);
-	int mark_miss(int a[], int n);
+	int find_native_miss(int a[], int n);
+	int find_missing_mark(int a[], int n);
+	int find_hash_miss(int a[], int n);
 };

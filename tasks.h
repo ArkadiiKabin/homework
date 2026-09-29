@@ -160,8 +160,8 @@ void task4() {
     };
 
     for (const auto& c : cases){
-        bool res1 = t.is_palindrom_approach1(c.input);
-        bool res2 = t.is_palindrom_approach2(c.input);
+        bool res1 = t.is_palindrome_approach1(c.input);
+        bool res2 = t.is_palindrome_approach2(c.input);
         check_task4(c.name, c.expected, res1, res2);
     }
 }
@@ -189,9 +189,9 @@ void task5() {
         vector<int> a1 = c.data;
         vector<int> a2 = c.data;
         vector<int> a3 = c.data;
-        int res1 = t.count_long(a1.data(), n);
-        int res2 = t.count_sort(a2.data(), n);
-        int res3 = t.count_xash(a3.data(), n);
+        int res1 = t.count_unique_bruteforce(a1.data(), n);
+        int res2 = t.count_unique_sort(a2.data(), n);
+        int res3 = t.count_unique_hash(a3.data(), n);
         check_task5(c.name, c.expected, res1, res2, res3);
     }
 }
@@ -220,8 +220,8 @@ void task6() {
         int n = (int)c.data.size();
         vector<int> a1 = c.data;
         vector<int> a2 = c.data;
-        int res1 = t.native_miss(a1.data(), n);
-        int res2 = t.mark_miss(a2.data(), n);
+        int res1 = t.find_native_miss(a1.data(), n);
+        int res2 = t.find_missing_mark(a2.data(), n);
         check_task6(c.name, c.expected, res1, res2);
     }
 }

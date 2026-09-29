@@ -1,8 +1,15 @@
 #pragma once
 #include <iostream>
 #include <algorithm>
-#include <vector>
 #include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+const char* type_name[] = {
+    "sorted",
+    "reversed",
+    "random"
+};
 
 void run_table() {
 	Task2 t;
@@ -19,7 +26,7 @@ void run_table() {
 				auto a = orig;
 				t.cmp = 0; t.writes = 0;
 				algo == 0 ? t.bubble_sort(a.data(), n) : t.insertion_sort(a.data(), n);
-				std::cout << algo << '\t' << n << '\t' << type << '\t'
+				std::cout << algo << '\t' << n << '\t' << type_name[type] << '\t'
 					<< t.cmp << '\t' << t.writes << '\t'
 					<< (a == ref ? "OK" : "FAIL") << '\n';
 			}
@@ -28,10 +35,7 @@ void run_table() {
 }
 
 void measure_table() {
-	using namespace std;
-	using namespace std::chrono;
 	Task2 t;
-
 	cout << "\nalgo\tn\ttype\tms\n";
 
 	for (int n : {100, 500, 1000, 2000}) {
@@ -44,8 +48,8 @@ void measure_table() {
 				if (algo == 0) t.bubble_sort(a.data(), n);
 				else t.insertion_sort(a.data(), n);
 				auto end = steady_clock::now();
-				auto us = duration_cast<microseconds>(end - start).count();
-				cout << algo << '\t' << n << '\t' << type << '\t' << us << '\n';
+				auto ms = duration_cast<microseconds>(end - start).count();
+				cout << algo << '\t' << n << '\t' << type_name[type] << '\t' << ms << '\n';
 			}
 		}
 	}
